@@ -11,7 +11,7 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
-        parallelism.default: 2        
+        parallelism.default: 3        
 
   taskmanager:
     image: flink:latest
@@ -25,5 +25,15 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
-        taskmanager.numberOfTaskSlots: 2
-        parallelism.default: 2
+        taskmanager.numberOfTaskSlots: 3
+        parallelism.default: 3
+sql-client:
+    image: flink:latest
+    command: bin/sql-client.sh
+    depends_on:
+      - jobmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        rest.address: jobmanager
