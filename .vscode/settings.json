@@ -1,4 +1,7 @@
 {
-    "java.project.sourcePaths": [],
+    "java.project.sourcePaths": [
+        "src/main/java",
+        "src/main/resources"
+    ],
     "maven.view": "hierarchical"
 }
