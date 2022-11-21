@@ -15,8 +15,16 @@
 	},
 
 	"mounts": [
-		"source=,target=/target/movies-data,type=bind,consistency=cached"
-	  ]
+		"source=${localEnv:USERPROFILE}/data,target=/workspaces/movies-data,type=bind,consistency=cached"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vscjava.vscode-java-pack",
+				"ms-azuretools.vscode-docker"
+			]
+		}
+	}
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
