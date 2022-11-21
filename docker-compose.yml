@@ -13,7 +13,19 @@ services:
         jobmanager.rpc.address: jobmanager
         parallelism.default: 2        
 
-  taskmanager:
+  taskmanager-1:
+    image: flink:latest
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    scale: 1
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+        parallelism.default: 2
+  taskmanager-2:
     image: flink:latest
     depends_on:
       - jobmanager
