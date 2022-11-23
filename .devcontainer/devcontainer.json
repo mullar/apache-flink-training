@@ -12,7 +12,7 @@
 		"ghcr.io/guiyomh/features/vim:0": {}
 	},
 	"mounts": [
-		"source=${localEnv:USERPROFILE}/data,target=/workspaces/data/movies,type=bind,consistency=cached"
+		"source=${localEnv:USERPROFILE}/data,target=/data/movies,type=bind,consistency=cached"
 	]
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
