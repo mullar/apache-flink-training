@@ -18,7 +18,16 @@
 
 package roman.training;
 
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import javax.management.ValueExp;
+
+import org.apache.flink.api.common.functions.GroupReduceFunction;
+import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.operators.Order;
+import org.apache.flink.api.java.DataSet;
+import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple3;
+import org.apache.flink.util.Collector;
 
 /**
  * Skeleton for a Flink DataStream Job.
@@ -37,29 +46,56 @@ public class DataStreamJob {
 	public static void main(String[] args) throws Exception {
 		// Sets up the execution environment, which is the main entry point
 		// to building Flink applications.
-		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+		final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-		/*
-		 * Here, you can start creating your execution plan for Flink.
-		 *
-		 * Start with getting some data from the environment, like
-		 * 	env.fromSequence(1, 10);
-		 *
-		 * then, transform the resulting DataStream<Long> using operations
-		 * like
-		 * 	.filter()
-		 * 	.flatMap()
-		 * 	.window()
-		 * 	.process()
-		 *
-		 * and many more.
-		 * Have a look at the programming guide:
-		 *
-		 * https://nightlies.apache.org/flink/flink-docs-stable/
-		 *
-		 */
+		DataSet<Tuple2<Long, Double>> ratings = getRatings(env);
+		DataSet<Tuple2<Long, String>> movies = getMovies(env);
 
-		// Execute program, beginning computation.
-		env.execute("Flink Java API Skeleton");
+		DataSet<Tuple2<Long, Double>> averageRating = ratings.groupBy(0).reduceGroup(new GroupReduceFunction<Tuple2<Long,Double>,Tuple2<Long, Double>>() {
+			@Override
+			public void reduce(Iterable<Tuple2<Long, Double>> values, Collector<Tuple2<Long, Double>> out) throws Exception {
+				Double sum = 0.0;
+				long length = 0;
+				long movieId = 0;
+
+				for (Tuple2<Long, Double> value : values) {
+					movieId = value.f0;
+					sum += value.f1;
+					++length;
+				}
+
+				out.collect(new Tuple2<Long, Double>(movieId, sum / length));				
+			}			
+		});
+
+		averageRating = averageRating.sortPartition(1, Order.DESCENDING).setParallelism(1);
+
+		DataSet<Tuple2<Long, Double>> top10 = averageRating.first(20);
+		
+		DataSet<Tuple3<Long, String, Double>> top10WithName = top10.joinWithHuge(movies).where(0).equalTo(0).map(new MapFunction<Tuple2<Tuple2<Long,Double>,Tuple2<Long,String>>,Tuple3<Long,String, Double>>() {
+			@Override
+			public Tuple3<Long, String, Double> map(Tuple2<Tuple2<Long, Double>, Tuple2<Long, String>> value)
+					throws Exception {				
+				return new Tuple3<Long, String, Double>(value.f0.f0, value.f1.f1, value.f0.f1);
+			}			
+		});
+		
+		top10WithName.print();
 	}
+
+	private static DataSet<Tuple2<Long, Double>> getRatings(ExecutionEnvironment env) {
+		return env.readCsvFile("/data/movies/ratings.csv")
+				.fieldDelimiter(",")
+				.ignoreFirstLine()
+				.includeFields(false, true, true)
+				.types(Long.class, Double.class);
+    }
+
+	private static DataSet<Tuple2<Long, String>> getMovies(ExecutionEnvironment env) {
+		return env.readCsvFile("/data/movies/movies.csv")
+				.fieldDelimiter(",")
+				.ignoreFirstLine()
+				.includeFields(true, true)
+				.types(Long.class, String.class);
+    }
 }
