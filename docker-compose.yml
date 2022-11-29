@@ -7,7 +7,7 @@ services:
     command: jobmanager
     volumes:
       - /host/path/to/job/artifacts:/opt/flink/usrlib
-      - /workspaces/movies-data:/workspaces/movies-data:cached
+      - /data/movies:/data/movies:cached
     environment:
       - |
         FLINK_PROPERTIES=
@@ -19,6 +19,8 @@ services:
     depends_on:
       - jobmanager
     command: taskmanager
+    volumes:
+      - /data/movies:/data/movies:cached
     scale: 1
     environment:
       - |
@@ -31,6 +33,8 @@ services:
     depends_on:
       - jobmanager
     command: taskmanager
+    volumes:
+      - /data/movies:/data/movies:cached
     scale: 1
     environment:
       - |
