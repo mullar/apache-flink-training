@@ -1,0 +1,2 @@
+Download the input data and placed it under ${localEnv:USERPROFILE}/data folder. It automatically will be mounted to dev container and flink cluster containers that you can lunch from docker-compose.yml.
+https://files.grouplens.org/datasets/movielens/ml-25m.zip
