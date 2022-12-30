@@ -6,7 +6,7 @@ services:
       - "8081:8081"
     command: jobmanager
     volumes:
-      - /host/path/to/job/artifacts:/opt/flink/usrlib
+      - /workspaces/apache-flink-training/demo/target:/opt/flink/usrlib
       - /data/movies:/data/movies:cached
     environment:
       - |
