@@ -30,7 +30,7 @@ public class MoviesBatchJob {
 				.fieldDelimiter(",")
 				.ignoreFirstLine()
 				.includeFields(false, true, true)
-				.tupleType(Rating.class);
+				.tupleType(Rating.class).setParallelism(4);
     }
 
 	private static DataSet<Movie> getMovies(ExecutionEnvironment env) {
