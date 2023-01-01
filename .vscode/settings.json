@@ -1,5 +1,4 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic",
-    "maven.view": "hierarchical",
-    "java.dependency.syncWithFolderExplorer": true
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic"
 }
