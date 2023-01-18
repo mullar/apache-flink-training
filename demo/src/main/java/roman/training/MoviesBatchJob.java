@@ -13,8 +13,8 @@ public class MoviesBatchJob {
 		// to building Flink applications.
 		final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-		DataSet<Rating> ratings = getRatings(env);
-		DataSet<Movie> movies = getMovies(env);
+		DataSet<Rating> ratings = DataSetLookup.getRatings(env);
+		DataSet<Movie> movies = DataSetLookup.getMovies(env);
 
 		DataSet<Tuple2<Long, Double>> averageRating = ratings.groupBy(0).reduceGroup(new MovieAverageRatingGroupReduceFunction()).setParallelism(4);
 		averageRating = averageRating.sortPartition(1, Order.DESCENDING).setParallelism(4);
@@ -24,20 +24,4 @@ public class MoviesBatchJob {
 		
 		top10WithName.print();
 	}
-
-	private static DataSet<Rating> getRatings(ExecutionEnvironment env) {
-		return env.readCsvFile("/data/movies/ratings.csv")
-				.fieldDelimiter(",")
-				.ignoreFirstLine()
-				.includeFields(false, true, true)
-				.tupleType(Rating.class).setParallelism(4);
-    }
-
-	private static DataSet<Movie> getMovies(ExecutionEnvironment env) {
-		return env.readCsvFile("/data/movies/movies.csv")
-				.fieldDelimiter(",")
-				.ignoreFirstLine()
-				.includeFields(true, true)
-				.tupleType(Movie.class);
-    }
 }

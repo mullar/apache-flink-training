@@ -1,4 +1,4 @@
-version: "2.2"
+version: "3.7"
 services:
   jobmanager:
     image: flink:latest
@@ -26,7 +26,7 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
-        taskmanager.numberOfTaskSlots: 2
+        taskmanager.numberOfTaskSlots: 50
         parallelism.default: 2
   taskmanager-2:
     image: flink:latest
@@ -40,7 +40,7 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
-        taskmanager.numberOfTaskSlots: 2
+        taskmanager.numberOfTaskSlots: 50
         parallelism.default: 2
 
   sql-client:
@@ -53,3 +53,14 @@ services:
           FLINK_PROPERTIES=
           jobmanager.rpc.address: jobmanager
           rest.address: jobmanager
+  mysql:
+      image: mysql:8.0.31
+      volumes:
+        - mysql-data:/var/lib/mysql
+      environment: 
+        MYSQL_ROOT_PASSWORD: root123
+        MYSQL_DATABASE: test_db
+      ports:
+        - "3306:3306"
+volumes:
+  mysql-data:
