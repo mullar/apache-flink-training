@@ -12,7 +12,7 @@ public class MovieAverageRatingGroupReduceFunction implements GroupReduceFunctio
         long movieId = 0;
 
         for (Rating value : values) {
-            movieId = value.getId();
+            movieId = value.getMovieId();
             sum += value.getRating();
             ++length;
         }

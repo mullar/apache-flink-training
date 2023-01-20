@@ -16,8 +16,15 @@ public class DataSetLookup {
 		return env.readCsvFile("/data/movies/ratings.csv")
 				.fieldDelimiter(",")
 				.ignoreFirstLine()
-				.includeFields(false, true, true)
-				.tupleType(Rating.class).setParallelism(4);
+				.includeFields(true, true, true, true)
+				.tupleType(Rating.class);
+    }
+
+    public static DataStreamSource<Rating> getRatings(StreamExecutionEnvironment env) {
+        CsvReaderFormat<Rating> csvFormat = forPojo(Rating.class);
+        FileSource<Rating> source = FileSource.forRecordStreamFormat(csvFormat, new Path("/data/movies/ratings.csv")).build();
+        DataStreamSource<Rating> stream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "RatingsFile");
+        return stream;
     }
 
 	public static DataSet<Movie> getMovies(ExecutionEnvironment env) {
