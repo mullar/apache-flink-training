@@ -2,7 +2,6 @@ version: "3.7"
 services:
   jobmanager:
     image: flink:latest
-    memory: 1024m
     ports:
       - "8081:8081"
     command: jobmanager
@@ -17,7 +16,6 @@ services:
 
   taskmanager-1:
     image: flink:latest
-    memory: 1024m
     depends_on:
       - jobmanager
     command: taskmanager
@@ -32,7 +30,6 @@ services:
         parallelism.default: 2
   taskmanager-2:
     image: flink:latest
-    memory: 1024m
     depends_on:
       - jobmanager
     command: taskmanager
@@ -48,7 +45,6 @@ services:
 
   sql-client:
       image: flink:latest
-      memory: 1024m
       command: bin/sql-client.sh
       depends_on:
         - jobmanager
@@ -59,7 +55,6 @@ services:
           rest.address: jobmanager
   mysql:
       image: mysql:8.0.31
-      memory: 4048m
       volumes:
         - mysql-data:/var/lib/mysql
       environment: 
