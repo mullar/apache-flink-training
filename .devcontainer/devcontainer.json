@@ -1,15 +1,18 @@
 {
 	"name": "Flink Training",
 	"image": "mcr.microsoft.com/devcontainers/java:11-bullseye",
+	"runArgs": [
+		"--memory=8gb"
+	],
 	"features": {
-		"ghcr.io/devcontainers/features/java:1": {
+		"ghcr.io/devcontainers/features/java:1.2.0": {
 			"version": "none",
 			"installMaven": "true",
 			"installGradle": "false"
 		},
-		"ghcr.io/devcontainers/features/docker-in-docker:1": {},
-		"ghcr.io/devcontainers/features/github-cli:1": {},
-		"ghcr.io/guiyomh/features/vim:0": {}
+		"ghcr.io/devcontainers/features/docker-in-docker:2.0.0": {},
+		"ghcr.io/devcontainers/features/github-cli:1.0.9": {},
+		"ghcr.io/guiyomh/features/vim:0.0.1": {}
 	},
 	"mounts": [
 		"source=${localEnv:USERPROFILE}/data,target=/data/movies,type=bind,consistency=cached"

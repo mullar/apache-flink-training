@@ -1,17 +1,15 @@
 package roman.training;
 
-import java.util.Date;
-
 import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({"userId","movieId","rating","timestamp"})   
-public class Rating extends Tuple4<Long, Long, Double, Date> {
+public class Rating extends Tuple4<Long, Long, Double, Long> {
     public Rating() {
         super();
     }
 
-    public Rating(Long userId, Long movieId, Double rating, Date timestamp) {
+    public Rating(Long userId, Long movieId, Double rating, Long timestamp) {
         super(userId, movieId, rating, timestamp);
     }
     
@@ -27,7 +25,7 @@ public class Rating extends Tuple4<Long, Long, Double, Date> {
         return f2;
     }
 
-    public Date getTimestamp() {
+    public Long getTimestamp() {
         return f3;
     }
 
@@ -43,7 +41,7 @@ public class Rating extends Tuple4<Long, Long, Double, Date> {
         setField(rating, 2);
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Long timestamp) {
         setField(timestamp, 3);
     }
 }

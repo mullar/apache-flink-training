@@ -1,6 +1,6 @@
 package roman.training;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -11,7 +11,7 @@ import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class MoviesDataUploadJob {
-    public static final String MY_SQL_IP = "172.19.0.3";
+    public static final String MY_SQL_IP = "172.19.0.2";
 
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -46,23 +46,23 @@ public class MoviesDataUploadJob {
                 }
             }).addSink(
             JdbcSink.sink(
-        "insert into ratings (user_id, movie_id, rating, timestamp) values (?, ?, ?, ?) on duplicate key update rating=values(rating), timestamp=values(timestamp)",        
+        "insert into ratings (user_id, movie_id, rating, created_ts) values (?, ?, ?, ?) on duplicate key update rating=values(rating), created_ts=values(created_ts)",        
             (statement, rating) -> {
             statement.setLong(1, rating.getUserId());
             statement.setLong(2, rating.getMovieId());
             statement.setDouble(3, rating.getRating());
-            statement.setDate(4, new Date(rating.getTimestamp().getTime()));
+            statement.setTimestamp(4, new Timestamp(rating.getTimestamp() * 1000));
             }, 
             new JdbcExecutionOptions.Builder()
             .withBatchSize(1000)
             .withMaxRetries(0)
             .build(),
             new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-                                .withUrl(String.format("jdbc:mysql://%s:3306/test_db", MY_SQL_IP))
-                                .withDriverName("com.mysql.cj.jdbc.Driver")
+                                .withUrl(String.format("jdbc:mariadb://%s:3306/test_db", MY_SQL_IP))
+                                .withDriverName("org.mariadb.jdbc.Driver")
                                 .withUsername("root")
                                 .withPassword("root123")
-                                .build())).setParallelism(50); 
+                                .build())).setParallelism(100); 
                                 
         env.execute();
     }

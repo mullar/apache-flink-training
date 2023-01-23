@@ -53,14 +53,18 @@ services:
           FLINK_PROPERTIES=
           jobmanager.rpc.address: jobmanager
           rest.address: jobmanager
-  mysql:
-      image: mysql:8.0.31
-      volumes:
-        - mysql-data:/var/lib/mysql
-      environment: 
-        MYSQL_ROOT_PASSWORD: root123
-        MYSQL_DATABASE: test_db
-      ports:
+
+  mariadb:
+    image: "mariadb:10.10-jammy"
+    restart: 'always'
+    volumes: 
+      - "/var/lib/mysql/data:/mariadb_data"
+      - "/var/lib/mysql/logs:/mariadb_log"
+      - "/var/docker/mariadb/conf:/etc/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: adminr
+      MYSQL_PASSWORD: "adminr123"
+    ports:
         - "3306:3306"
-volumes:
-  mysql-data:
