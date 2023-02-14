@@ -12,7 +12,9 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
-        parallelism.default: 2        
+        parallelism.default: 2
+        state.backend: rocksdb
+        state.backend.incremental: true
 
   taskmanager-1:
     image: flink:latest
@@ -26,8 +28,12 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
-        taskmanager.numberOfTaskSlots: 50
-        parallelism.default: 2
+        taskmanager.numberOfTaskSlots: 10
+        taskmanager.memory.process.size: 4096mb
+        taskmanager.memory.managed.size: 512mb
+        parallelism.default: 1
+        state.backend: rocksdb
+        state.backend.incremental: true
   taskmanager-2:
     image: flink:latest
     depends_on:
@@ -41,8 +47,8 @@ services:
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
         taskmanager.numberOfTaskSlots: 50
-        parallelism.default: 2
-
+        taskmanager.memory.process.size: 4096mb
+        parallelism.default: 1
   sql-client:
       image: flink:latest
       command: bin/sql-client.sh
@@ -68,3 +74,10 @@ services:
       MYSQL_PASSWORD: "adminr123"
     ports:
         - "3306:3306"
+
+  rabbitmq:
+        image: rabbitmq:3.11.7
+        container_name: rabbitmq
+        ports:
+            - 5672:5672
+            - 15672:15672

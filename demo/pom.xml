@@ -43,7 +43,7 @@ under the License.
 		<!-- These dependencies are provided, because they should not be packaged into the JAR file. -->
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-streaming-java</artifactId>
+			<artifactId>flink-table-api-java-bridge</artifactId>
 			<version>${flink.version}</version>
 			<scope>provided</scope>
 		</dependency>
@@ -84,7 +84,19 @@ under the License.
 			<artifactId>flink-csv</artifactId>
 			<version>${flink.version}</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency>		
+		<dependency>
+    		<groupId>com.nextbreakpoint</groupId>
+    		<artifactId>com.nextbreakpoint.flinkclient</artifactId>
+    		<version>1.0.4</version>
+			<scope>compile</scope>
+		</dependency>	
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.32</version>
+			<scope>compile</scope>
+		</dependency>    
 
 		<!-- Add connector dependencies here. They must be in the default scope (compile). -->
 
@@ -170,7 +182,7 @@ under the License.
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>roman.training.MoviesDataUploadJob</mainClass>
+									<mainClass>roman.training.MovieBatchJob</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

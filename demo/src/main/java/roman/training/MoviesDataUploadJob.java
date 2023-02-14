@@ -31,13 +31,13 @@ public class MoviesDataUploadJob {
             .withMaxRetries(0)
             .build(),
             new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-                                    .withUrl(String.format("jdbc:mysql://%s:3306/test_db", MY_SQL_IP))
-                                    .withDriverName("com.mysql.cj.jdbc.Driver")
+                                    .withUrl(String.format("jdbc:mariadb://%s:3306/test_db", MY_SQL_IP))
+                                    .withDriverName("org.mariadb.jdbc.Driver")
                                     .withUsername("root")
                                     .withPassword("root123")
-                                    .build())).setParallelism(50); 
+                                    .build())).setParallelism(2); 
 
-        DataStreamSource<Rating> ratings = DataSetLookup.getRatings(env).setParallelism(10);
+        DataStreamSource<Rating> ratings = DataSetLookup.getRatings(env).setParallelism(2);
 
         ratings.keyBy(rating -> 
             new KeySelector<Rating, Tuple2<Long, Long>>() {
@@ -62,7 +62,7 @@ public class MoviesDataUploadJob {
                                 .withDriverName("org.mariadb.jdbc.Driver")
                                 .withUsername("root")
                                 .withPassword("root123")
-                                .build())).setParallelism(100); 
+                                .build())).setParallelism(2); 
                                 
         env.execute();
     }
