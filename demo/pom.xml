@@ -84,13 +84,13 @@ under the License.
 			<artifactId>flink-csv</artifactId>
 			<version>${flink.version}</version>
 			<scope>provided</scope>
-		</dependency>		
+		</dependency>
 		<dependency>
     		<groupId>com.nextbreakpoint</groupId>
     		<artifactId>com.nextbreakpoint.flinkclient</artifactId>
     		<version>1.0.4</version>
 			<scope>compile</scope>
-		</dependency>	
+		</dependency>					
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
