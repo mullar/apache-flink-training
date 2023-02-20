@@ -1,6 +1,7 @@
 package roman.training.functions;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.types.Row;

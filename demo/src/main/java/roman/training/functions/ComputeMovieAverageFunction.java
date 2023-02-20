@@ -1,6 +1,7 @@
 package roman.training.functions;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
