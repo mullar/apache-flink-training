@@ -1,4 +1,4 @@
-package roman.training;
+package roman.training.domain;
 
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.annotation.JsonPropertyOrder;

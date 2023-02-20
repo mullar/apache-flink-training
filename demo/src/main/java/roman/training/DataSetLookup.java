@@ -11,7 +11,12 @@ import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.jackson.JacksonMapperFactory;
 
-public class DataSetLookup {
+import roman.training.domain.Movie;
+import roman.training.domain.Rating;
+
+public final class DataSetLookup {
+    private DataSetLookup() {};
+
     public static DataSet<Rating> getRatings(ExecutionEnvironment env) {
 		return env.readCsvFile("/data/movies/ratings.csv")
 				.fieldDelimiter(",")

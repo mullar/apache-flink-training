@@ -10,6 +10,9 @@ import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
+import roman.training.domain.Movie;
+import roman.training.domain.Rating;
+
 public class MoviesDataUploadJob {
     public static final String MY_SQL_IP = "172.19.0.2";
 
@@ -50,7 +53,7 @@ public class MoviesDataUploadJob {
             (statement, rating) -> {
             statement.setLong(1, rating.getUserId());
             statement.setLong(2, rating.getMovieId());
-            statement.setDouble(3, rating.getRating());
+            statement.setBigDecimal(3, rating.getRating());
             statement.setTimestamp(4, new Timestamp(rating.getTimestamp() * 1000));
             }, 
             new JdbcExecutionOptions.Builder()
@@ -62,7 +65,7 @@ public class MoviesDataUploadJob {
                                 .withDriverName("org.mariadb.jdbc.Driver")
                                 .withUsername("root")
                                 .withPassword("root123")
-                                .build())).setParallelism(2); 
+                                .build())).setParallelism(10); 
                                 
         env.execute();
     }
