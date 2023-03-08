@@ -28,9 +28,9 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
-        taskmanager.numberOfTaskSlots: 10
-        taskmanager.memory.process.size: 4096mb
-        taskmanager.memory.managed.size: 512mb
+        taskmanager.numberOfTaskSlots: 5
+        taskmanager.memory.process.size: 2048mb
+        taskmanager.memory.managed.size: 256mb
         parallelism.default: 1
         state.backend: rocksdb
         state.backend.incremental: true
@@ -46,9 +46,12 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
-        taskmanager.numberOfTaskSlots: 50
-        taskmanager.memory.process.size: 4096mb
+        taskmanager.numberOfTaskSlots: 5
+        taskmanager.memory.process.size: 2048mb
+        taskmanager.memory.managed.size: 256mb
         parallelism.default: 1
+        state.backend: rocksdb
+        state.backend.incremental: true
   sql-client:
       image: flink:latest
       command: bin/sql-client.sh
