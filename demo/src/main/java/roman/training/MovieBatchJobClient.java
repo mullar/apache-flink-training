@@ -24,7 +24,7 @@ public class MovieBatchJobClient {
         JarRunResponseBody jarRunResponse = null;
        
         try {
-            jarRunResponse = api.runJar(fileName, true, null, null, null, MoviesBatchJobWithTableStreaming.class.getName(), null);
+            jarRunResponse = api.runJar(fileName, true, null, null, null, MoviesDataUploadJob.class.getName(), null);
         } catch (ApiException e) {
             System.out.println(e.getResponseBody());
             throw e.fillInStackTrace();

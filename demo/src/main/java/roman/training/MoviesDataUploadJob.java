@@ -19,9 +19,9 @@ public class MoviesDataUploadJob {
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        DataStreamSource<Movie> movies = DataSetLookup.getMovies(env).setParallelism(2);
+        DataStreamSource<Movie> movies = DataSetLookup.getMovies(env).setParallelism(1);
 
-        movies.keyBy(movie -> movie.getMovieId()).addSink(
+        movies.addSink(
             JdbcSink.sink(
         "insert into movies (movie_id, title, genres) values (?, ?, ?) on duplicate key update title=values(title), genres=values(genres)",        
             (statement, movie) -> {
@@ -40,14 +40,9 @@ public class MoviesDataUploadJob {
                                     .withPassword("root123")
                                     .build())).setParallelism(2); 
 
-        DataStreamSource<Rating> ratings = DataSetLookup.getRatings(env).setParallelism(2);
+        DataStreamSource<Rating> ratings = DataSetLookup.getRatings(env).setParallelism(1);
 
-        ratings.keyBy(rating -> 
-            new KeySelector<Rating, Tuple2<Long, Long>>() {
-                public Tuple2<Long, Long> getKey(Rating rating) throws Exception {
-                    return new Tuple2<Long, Long>(rating.getUserId(), rating.getMovieId());
-                }
-            }).addSink(
+        ratings.addSink(
             JdbcSink.sink(
         "insert into ratings (user_id, movie_id, rating, created_ts) values (?, ?, ?, ?) on duplicate key update rating=values(rating), created_ts=values(created_ts)",        
             (statement, rating) -> {
