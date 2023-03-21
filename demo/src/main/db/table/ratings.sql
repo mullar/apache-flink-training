@@ -1,6 +1,7 @@
 -- Active: 1674446945536@@localhost@3306@test_db
 CREATE TABLE ratings(
-    id BIGINT AUTO_INCREMENT,  
+    id BIGINT AUTO_INCREMENT,
+    partition_id BIGINT NOT NULL,  
     user_id BIGINT NOT NULL,
     movie_id BIGINT NOT NULL,
     rating DECIMAL(2, 1) NOT NULL,

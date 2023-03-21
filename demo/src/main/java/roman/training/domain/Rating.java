@@ -2,17 +2,18 @@ package roman.training.domain;
 
 import java.math.BigDecimal;
 
-import org.apache.flink.api.java.tuple.Tuple4;
+import org.apache.flink.api.java.tuple.Tuple5;
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({"userId","movieId","rating","timestamp"})   
-public class Rating extends Tuple4<Long, Long, BigDecimal, Long> {
+public class Rating extends Tuple5<Long, Long, BigDecimal, Long, Long> {
     public Rating() {
         super();
+        setField(0L, 4);
     }
 
-    public Rating(Long userId, Long movieId, BigDecimal rating, Long timestamp) {
-        super(userId, movieId, rating, timestamp);
+    public Rating(Long userId, Long movieId, BigDecimal rating, Long timestamp, Long partitionId) {
+        super(userId, movieId, rating, timestamp, partitionId);
     }
     
     public Long getUserId() {
@@ -31,6 +32,10 @@ public class Rating extends Tuple4<Long, Long, BigDecimal, Long> {
         return f3;
     }
 
+    public Long getPartitionId() {
+        return f4;
+    }
+
     public void setUserId(Long userId) {
         setField(userId, 0);
     }
@@ -45,5 +50,9 @@ public class Rating extends Tuple4<Long, Long, BigDecimal, Long> {
 
     public void setTimestamp(Long timestamp) {
         setField(timestamp, 3);
+    }
+
+    public void setPartitionId(Long partitionId) {
+        setField(partitionId, 4);
     }
 }
