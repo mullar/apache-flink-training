@@ -77,10 +77,3 @@ services:
       MYSQL_PASSWORD: "adminr123"
     ports:
         - "3306:3306"
-
-  rabbitmq:
-        image: rabbitmq:3.11.7
-        container_name: rabbitmq
-        ports:
-            - 5672:5672
-            - 15672:15672

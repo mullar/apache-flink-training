@@ -13,7 +13,7 @@ import com.nextbreakpoint.flinkclient.model.QueueStatus;
 public class MovieBatchJobClient {    
     public static void main(String[] args) throws Throwable {
         FlinkApi api = new FlinkApi();
-        api.getApiClient().setBasePath("http://172.19.0.4:8081");
+        api.getApiClient().setBasePath("http://172.19.0.3:8081");
         api.getApiClient().getHttpClient().setConnectTimeout(60*1000, TimeUnit.MILLISECONDS);
         api.getApiClient().getHttpClient().setWriteTimeout(60*1000, TimeUnit.MILLISECONDS);
         api.getApiClient().getHttpClient().setReadTimeout(60*1000, TimeUnit.MILLISECONDS);
@@ -24,7 +24,7 @@ public class MovieBatchJobClient {
         JarRunResponseBody jarRunResponse = null;
        
         try {
-            jarRunResponse = api.runJar(fileName, true, null, null, null, MoviesDataUploadJob.class.getName(), null);
+            jarRunResponse = api.runJar(fileName, true, null, null, null, MoviesBatchJobWithTableStreaming.class.getName(), null);
         } catch (ApiException e) {
             System.out.println(e.getResponseBody());
             throw e.fillInStackTrace();
